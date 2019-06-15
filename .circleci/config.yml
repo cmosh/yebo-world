@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/circleci-demo-ruby-rails
+    
+    # Primary container image where all commands run
+    
+    docker:
+      - image: cmosh/lambda-mssql:python3.7
+        environment:
+          DB_SERVER: 127.0.0.1
+          DB_PORT: 1433
+          DB_NAME: yebo
+          DB_USER: sa
+          DB_PASS: 'Str0ng!Pass'
+          MSSQL_CLI_SERVER: 127.0.0.1
+          MSSQL_CLI_USER: sa
+          MSSQL_CLI_PASSWORD: 'Str0ng!Pass'
+    
+    # Service container image available at `host: localhost`
+    
+      - image: mcr.microsoft.com/mssql/server
+        environment:
+          ACCEPT_EULA: 'Y'
+          SA_PASSWORD: 'Str0ng!Pass'
+        
+    steps:
+
+      # Bundle install dependencies
+      - run:
+          name: Install dependencies
+          command: pip install -r requirements.txt
+
+      - run:
+          name: Database Setup
+          command: | 
+            mssql-cli -f sql/schema.sql
+            mssql-cli -f sql/seed.sql     
+
+      - run:
+          name: Parallel RSpec
+          command: |-
+            /var/rapid/init --bootstrap /var/runtime/bootstrap '{"httpMethod": "GET", "path": "/lambda"}'
+            
