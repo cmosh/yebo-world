@@ -1,0 +1,7 @@
+{
+    "dev": {
+        "s3_bucket": "yebo-world",
+        "app_function": "yebo.app",
+        "exclude": ["layers/*", "sql/*","templates/*"]
+    }
+}
