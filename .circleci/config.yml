@@ -26,11 +26,6 @@ jobs:
         
     steps:
 
-      # Bundle install dependencies
-      - run:
-          name: Install dependencies
-          command: pip install -r requirements.txt
-
       - run:
           name: Database Setup
           command: | 
@@ -41,4 +36,3 @@ jobs:
           name: Parallel RSpec
           command: |-
             /var/rapid/init --bootstrap /var/runtime/bootstrap '{"httpMethod": "GET", "path": "/lambda"}'
-            
