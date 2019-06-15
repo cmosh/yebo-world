@@ -20,7 +20,7 @@ aws cloudformation create-stack --stack-name rancher-lb-stack --template-body fi
     DB_USER=sa
     DB_PASS=secret
     ```
-- Then upload layers/pyodbc-layer.zip as an aws lambder layer
+- Then upload layers/pyodbc-layer.zip as an aws lambda layer ([AWS Lambda Layer Docs](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html))
 - Because zappa doesn't support lambda layers as of yet, manually add the layer on the AWS lambda console 
 - Perform a GET request and be greeted by hello world with different hellos'
 
