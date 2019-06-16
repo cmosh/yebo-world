@@ -20,14 +20,8 @@ print(connection_string)
 cnxn = pyodbc.connect(connection_string)
 cursor = cnxn.cursor()
 
-cursor.execute("""
-               SELECT
-                yebo.dbo.greetings.greeting  as greeting
-                 FROM yebo.dbo.greetings
-                """)
-
+cursor.execute("SELECT * FROM [yebo].[dbo].[greetings]")    
 greetings = list(cursor)
-
 
 app = Flask(__name__)
 @app.route("/")

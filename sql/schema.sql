@@ -1,7 +1,7 @@
 create database yebo collate SQL_Latin1_General_CP1_CI_AS
 go
 
-create table dbo.greetings
+create table greetings
 (
 	greeting varchar(100),
 	language varchar(100),
@@ -12,6 +12,8 @@ create table dbo.greetings
 go
 
 create unique index greetings_id_uindex
-	on dbo.greetings (id)
+	on greetings (id)
 go
+
+
 

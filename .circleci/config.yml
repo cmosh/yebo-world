@@ -13,9 +13,6 @@ jobs:
           DB_NAME: yebo
           DB_USER: sa
           DB_PASS: 'Str0ng!Pass'
-          MSSQL_CLI_SERVER: 127.0.0.1
-          MSSQL_CLI_USER: sa
-          MSSQL_CLI_PASSWORD: 'Str0ng!Pass'
     
     # Service container image available at `host: localhost`
     
@@ -25,14 +22,22 @@ jobs:
           SA_PASSWORD: 'Str0ng!Pass'
         
     steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: pip install -r requirements.txt
 
       - run:
           name: Database Setup
           command: | 
-            mssql-cli -f sql/schema.sql
-            mssql-cli -f sql/seed.sql     
-
+            /opt/mssql-tools/bin/sqlcmd -S $DB_SERVER -U $DB_USER -P $DB_PASS -i sql/schema.sql
+            /opt/mssql-tools/bin/sqlcmd -S $DB_SERVER -U $DB_USER -P $DB_PASS -i sql/seed.sql
+            
       - run:
-          name: Parallel RSpec
+          name: Test Lambda
           command: |-
-            /var/rapid/init --bootstrap /var/runtime/bootstrap '{"httpMethod": "GET", "path": "/lambda"}'
+            unzip layers/pyodbc-layer.zip -d /opt/
+            rm -rf /var/task
+            ln -s $PWD /var/task
+            /var/rapid/init --bootstrap /var/runtime/bootstrap yebo.app '{"some": "event"}'
