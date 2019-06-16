@@ -31,6 +31,7 @@ jobs:
       - run:
           name: Database Setup
           command: | 
+            sleep 20s
             /opt/mssql-tools/bin/sqlcmd -S $DB_SERVER -U $DB_USER -P $DB_PASS -i sql/schema.sql
             /opt/mssql-tools/bin/sqlcmd -S $DB_SERVER -U $DB_USER -P $DB_PASS -i sql/seed.sql
             
